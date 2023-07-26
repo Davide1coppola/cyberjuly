@@ -1,0 +1,37 @@
+void foo() {
+    int ebp = 0; // Preservo il valore di ebp
+    int esp = ebp; // Copio il valore di ebp in esp
+
+    esp -= 0x8; // Sottraggo 8 a esp per fare spazio per le variabili locali
+
+    bar(); // Chiamo la funzione "bar" (80483e9 è l'indirizzo di "bar")
+
+    // Recupero lo stato precedente
+    esp = ebp;
+    // Ripristino il valore di ebp salvato precedentemente
+    ebp = *(int *)(esp + 0x4); // L'offset 0x4 è dove ebp è stato salvato in precedenza
+    // Ripristino l'indirizzo di ritorno della funzione chiamante
+    esp += 0x8; // Recupero spazio impilato per le variabili locali e l'indirizzo di ritorno
+
+    return; // Ritorno dalla funzione
+
+
+
+void bar() {
+    int ebp = 0; // Preservo il valore di ebp
+    int esp = ebp; // Copio il valore di ebp in esp
+
+    esp -= 0x8; // Sottraggo 8 a esp per fare spazio per le variabili locali
+
+    baz(); // Chiamo la funzione "baz" (80483fb è l'indirizzo di "baz")
+    quux(); // Chiamo la funzione "quux" (8048400 è l'indirizzo di "quux")
+
+    // Recupero lo stato precedente
+    esp = ebp;
+    // Ripristino il valore di ebp salvato precedentemente
+    ebp = *(int *)(esp + 0x4); // L'offset 0x4 è dove ebp è stato salvato in precedenza
+    // Ripristino l'indirizzo di ritorno della funzione chiamante
+    esp += 0x8; // Recupero spazio impilato per le variabili locali e l'indirizzo di ritorno
+
+    return; // Ritorno dalla funzione
+}
